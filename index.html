@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Frontend Project</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <html ng-app="App">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" />
+  </head>
+  
+  <body ng-cloak>
+    <div ng-controller="HomeController" class="travelers">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              Travel Plans
+            </a>            
+            <button class="btn btn-default navbar-btn pull-right" ng-click="logout()" ng-show="loggedIn">Log Out</button>            
+        </div>
+      </nav>
+      
+      <div class="loading text-center" ng-show="loading">
+        <i class="ionicons ion-loading-c"></i>
+      </div>     
+      
+      <div class="container">
+        <div ng-show="loggedIn">
+          <h1>Hello <span class="text-capitalize">{{firstName}}</span></h1>
+          <p class="text-muted lead">Jot down destinations you want to visit, check off places you've been to, and see what travel plans your friends have.</p>
+        </div>        
+        <div ng-hide="loggedIn">
+          <h1>Welcome to Travel Plans</h1>
+          <p class="text-muted lead">Log in as Amos, Andy, or Evie to get started.</p>
+        </div>
+        
+        <form ng-submit="loginUser()" ng-hide="loggedIn">
+          <div class="form-group">
+            <label>Traveler's Name</label>
+            <input class="form-control" type="text" placeholder="e.g. Amos" ng-model="username" />   
+          </div>
+          <input class="btn btn-primary" type="submit" ng-disabled="!username" value="Log In" />
+          <br /><br />
+          <div ng-show="cantFindUser" class="alert alert-danger">Hmm. We can't find that user. Please try either Amos, Andy, or Evie.
+            <i class="ionicons ion-close-round pull-right" ng-click="cantFindUser = false"></i>
+          </div>
+        </form>      
+        
+        <div ng-if="loggedIn">
+          <uib-tabset active="activeTab">
+            <uib-tab class="text-capitalize" ng-repeat="travelerInfo in travelersInfo" heading="{{travelerInfo.name}}" index="$index">
+              <ul class="list-unstyled">
+                <form class="add-destination" ng-submit="addDestination(destination.new)" ng-show="travelerId - 1 === $index">                  
+                  <div class="form-group">
+                    <h3 >Add New Destinations</h3>
+                    <input class="form-control" type="text" placeholder="e.g. Hawaii" ng-model="destination.new" />
+                  </div>
+                  <input class="btn btn-primary" type="submit" value="Add Destination" ng-disabled="!destination.new" />                                             
+                </form>                
+                <li class="destination" ng-repeat="destination in travelerInfo.destinations">
+                  <input ng-class="{'visited': travelerId - 1 !== $parent.$index}" type="checkbox" ng-click="changeVisited($index);" ng-model="destination.visited" ng-disabled="travelerId - 1 !== $parent.$index"/>
+                  <h4 ng-class="{'visited': destination.visited}">{{destination.name}}</h4>
+                  <span class="pull-right" ng-hide="travelerId - 1 !== $parent.$index" ng-click="deleteDestination($index)">
+                    <i class="ionicons ion-close-round"></i>                    
+                  </span>                  
+                </li>                
+              </ul>
+            </uib-tab>
+          </uib-tabset>
+        </div>        
+        <br />
+        </div>
+      </div>      
+    </div>    
+  </body>  
+</html>
+    <script  src="js/index.js"></script>
+</body>
+
+</html>

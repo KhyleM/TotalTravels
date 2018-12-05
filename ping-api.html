@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Display IP Address</title>
+	</head>
+	<body>
+		<script>
+			var authXhr = new XMLHttpRequest();
+			authXhr.open('POST', "https://tranquil-sands-87455.herokuapp.com/auth", true);
+			authXhr.setRequestHeader('Content-type', 'application/json');
+			authXhr.onreadystatechange = function() {
+				console.log("AUTH api helth check");
+				console.log("--- START ---");
+				console.log(authXhr);
+				console.log("--- END ---");
+			}
+			authXhr.send({
+				"name": "amos"
+			});
+
+			var travelersXhr = new XMLHttpRequest();
+			travelersXhr.open('GET', "https://tranquil-sands-87455.herokuapp.com/travelers", true);
+			travelersXhr.setRequestHeader('Content-type', 'application/json');
+			travelersXhr.onreadystatechange = function() {
+				console.log("TRAVELERS api helth check");
+				console.log("--- START ---");
+				console.log(travelersXhr);
+				console.log("--- END ---");
+			}
+			travelersXhr.send();
+
+			var travelersPatchXhr = new XMLHttpRequest();
+			travelersPatchXhr.open('PATCH', "https://tranquil-sands-87455.herokuapp.com/travelers/1", true);
+			travelersPatchXhr.setRequestHeader('Content-type', 'application/json');
+			travelersPatchXhr.onreadystatechange = function() {
+				console.log("TRAVELERS PATCH api helth check");
+				console.log("--- START ---");
+				console.log(travelersPatchXhr);
+				console.log("--- END ---");
+			}
+			travelersPatchXhr.send([
+				{
+					"name": "San Francisco", 
+					"visited": true
+				}]);
+		</script>
+	</body>
+</html>
